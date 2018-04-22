@@ -25,4 +25,4 @@ LinkedList.o: LinkedList.c LinkedList.h
 		$(CC) $(CFLAGS) -c LinkedList.c
 
 clean:
-	rm -f $(OBJ) $(EXEC) UnitTestGraph
+	rm -f $(OBJ) UnitTestGraph.o $(EXEC) UnitTestGraph

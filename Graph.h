@@ -17,5 +17,6 @@ int hasKey(Graph*, char*);
 GraphNode* getGraphNode(Graph*, char*);
 void makeAdj(Graph*, char*, char*);
 void printAdjList(Graph*);
+void printVertexList(Graph*);
 
 #endif

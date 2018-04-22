@@ -11,7 +11,7 @@
 
 typedef struct
 {
-    char* key;
+    char key[MAX_KEY_LENGTH];
     LinkedList* adjList;
     void* data;
     int numIncidence;

@@ -4,7 +4,7 @@ GraphNode* newGraphNode(char key[], void* data)
 {
     GraphNode* newNode = (GraphNode*) malloc(sizeof(GraphNode));
     newNode->adjList = newLinkedList();
-    newNode->key = key;
+    strncpy(newNode->key,key,MAX_KEY_LENGTH);
     newNode->data = data;
     newNode->numIncidence = 0;
 
@@ -45,7 +45,7 @@ void printAdj(GraphNode* node)
     LinkedList* adjList = node->adjList;
     LinkedListNode* curr = adjList->head;
 
-    printf("%s (%d)| ", node->key, node->numIncidence);
+    printf("%s | ", node->key);
     while(curr != NULL)
     {
         printf("%s ", ((GraphNode*) curr->data)->key);

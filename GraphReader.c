@@ -21,15 +21,21 @@ Graph* readGraph(char* path)
 
         while(fgets(str, MAX_STRING_SIZE, f) != NULL)
         {
+            strtok(str,"\n");
             origin = strtok(str, ",");
+            printf("Proccessing token : %s\n",origin);
             addGraphNode(graph, origin, NULL);
 
             do
             {
                 tok = strtok(NULL, ",");
-                addGraphNode(graph,tok,NULL);
-                makeAdj(graph,origin,tok);
-            }while(tok != NULL);
+                if(tok != NULL)
+                {
+                    printf("Proccessing token : %s\n",tok);
+                    addGraphNode(graph,tok,NULL);
+                    makeAdj(graph,origin,tok);
+                }
+            } while(tok != NULL);
         }
     }
 

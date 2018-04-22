@@ -8,6 +8,8 @@ int main(void)
 
     graph = readGraph("Graph1.txt");
     printAdjList(graph);
+    printVertexList(graph);
+    
 
     return 0;
 }

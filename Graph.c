@@ -70,14 +70,8 @@ void makeAdj(Graph* graph, char key1[], char key2[])
         if(isAdj(node1,node2) == FALSE)
         {
             addIncidence(node1, node2);
+            printf("New Edge = %s -> %s\n", key1, key2);
         }
-
-        if(isAdj(node2,node1) == FALSE)
-        {
-            addIncidence(node2,node1);
-        }
-
-        printf("New Edge = %s - %s\n", key1, key2);
     }
 }
 
@@ -92,4 +86,32 @@ void printAdjList(Graph* graph)
         printAdj((GraphNode*) curr->data);
         curr = curr->next;
     }
+}
+
+void printVertexList(Graph* graph)
+{
+    LinkedList* nodeList = graph->nodeList;
+    LinkedListNode* curr = nodeList->head;
+
+    printf("Vertex: ");
+    while(curr != NULL)
+    {
+        printf("%s ", ((GraphNode*) curr->data)->key);
+        curr = curr->next;
+    }
+    printf("\n");
+}
+
+void freeGraph(Graph* graph)
+{
+    LinkedList* nodeList = graph->nodeList;
+    LinkedListNode* curr = nodeList->head;
+
+    while(curr != NULL)
+    {
+        softFreeList(((GraphNode*) curr->data)->adjList);
+        curr = curr->next;
+    }
+    softFreeList(nodeList);
+    graph = NULL;
 }

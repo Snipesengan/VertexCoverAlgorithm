@@ -106,12 +106,18 @@ void freeGraph(Graph* graph)
 {
     LinkedList* nodeList = graph->nodeList;
     LinkedListNode* curr = nodeList->head;
+    GraphNode* node = NULL;
 
     while(curr != NULL)
     {
-        softFreeList(((GraphNode*) curr->data)->adjList);
+        node = (GraphNode*) curr->data;
+        softFreeList(node->adjList);
+        free(node);
+        node = NULL;
         curr = curr->next;
     }
+
     softFreeList(nodeList);
+    free(graph);
     graph = NULL;
 }

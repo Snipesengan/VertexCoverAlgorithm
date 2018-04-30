@@ -18,5 +18,6 @@ GraphNode* getGraphNode(Graph*, char*);
 void makeAdj(Graph*, char*, char*);
 void printAdjList(Graph*);
 void printVertexList(Graph*);
+void freeGraph(Graph*);
 
 #endif

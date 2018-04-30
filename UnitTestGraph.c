@@ -9,7 +9,7 @@ int main(void)
     graph = readGraph("Graph1.txt");
     printAdjList(graph);
     printVertexList(graph);
-    
+    freeGraph(graph);
 
     return 0;
 }

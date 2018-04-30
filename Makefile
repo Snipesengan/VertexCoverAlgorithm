@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS= -Wall -ansi -pedantic
-OBJ=LinkedList.o GraphNode.o Graph.o GraphReader.o
+OBJ=LinkedList.o GraphNode.o Graph.o GraphReader.o Heap.o
 EXEC=VertexCoverAlgorithm
 
 $(EXEC): $(OBJ)
@@ -22,7 +22,10 @@ GraphNode.o: GraphNode.c GraphNode.h LinkedList.h
 	$(CC) $(CFLAGS) -c GraphNode.c
 
 LinkedList.o: LinkedList.c LinkedList.h
-		$(CC) $(CFLAGS) -c LinkedList.c
+	$(CC) $(CFLAGS) -c LinkedList.c
+
+Heap.o: Heap.c Heap.h
+	$(CC) $(CFLAGS) -c Heap.c
 
 clean:
 	rm -f $(OBJ) UnitTestGraph.o $(EXEC) UnitTestGraph

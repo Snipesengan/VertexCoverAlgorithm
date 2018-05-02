@@ -9,17 +9,19 @@ typedef int (*GET_KEY_CALLBACK)(void*);
 typedef struct
 {
     enum {MAX, MIN} heap_type;
+    GET_KEY_CALLBACK funcptr;
     void** data_array;
     int heap_size;
-    size_t MAX_SIZE;
-    GET_KEY_CALLBACK funcptr;
+    int MAX_SIZE;
+
+
 } Heap;
 
-Heap* createEmptyHeap(int, size_t, GET_KEY_CALLBACK);
-void* heapExtractRoot(Heap*,GET_KEY_CALLBACK funcptr);
-void* heapExtractIndex(Heap*,int,GET_KEY_CALLBACK funcptr);
-int heapUpdate(Heap*,int,GET_KEY_CALLBACK funcptr);
-void buildHeap(Heap*, void**, size_t, GET_KEY_CALLBACK);
-int heapInsert(Heap*,void*,GET_KEY_CALLBACK funcptr);
+Heap* createEmptyHeap(int, int, GET_KEY_CALLBACK);
+void* heapExtractRoot(Heap*);
+void* heapExtractIndex(Heap*,int);
+int heapUpdate(Heap*,int);
+void buildHeap(Heap*, void**, int);
+int heapInsert(Heap*,void*);
 
 #endif

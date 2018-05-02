@@ -46,32 +46,33 @@ int main(void)
     }
     printf("%d}\n",  *(int*)intArr[9]);
 
-    buildHeap(heap, intArr, 10, &getKey);
+    buildHeap(heap, intArr, 10);
 
     printf("Output Heap : {");
     while(heap->heap_size > 1)
     {
-        printf("%d,", *((int*)heapExtractRoot(heap, &getKey)));
+        printf("%d,", *((int*)heapExtractRoot(heap)));
     }
-    printf("%d}\n\n", *((int*)heapExtractRoot(heap, &getKey)));
+    printf("%d}\n\n", *((int*)heapExtractRoot(heap)));
 
     /*--------------------------TEST HEAPINSERT------------------------------*/
-    printf("Testing heapInsert \n");
+    printf("Testing heapInsert: \n");
+    heap->heap_type = MIN;
     printf("Input array : {");
     for(i = 0; i < 9; i++)
     {
         printf("%d,", *(int*)intArr[i]);
-        heapInsert(heap, intArr[i], &getKey);
+        heapInsert(heap, intArr[i]);
     }
-    heapInsert(heap, intArr[9], &getKey);
+    heapInsert(heap, intArr[9]);
     printf("%d}\n",  *(int*)intArr[9]);
 
     printf("Output Heap : {");
     while(heap->heap_size > 1)
     {
-        printf("%d,", *((int*)heapExtractIndex(heap, heap->heap_size - 1,&getKey)));
+        printf("%d,", *((int*)heapExtractIndex(heap, 0)));
     }
-    printf("%d}\n\n", *((int*)heapExtractIndex(heap, heap->heap_size - 1,&getKey)));
+    printf("%d}\n\n", *((int*)heapExtractIndex(heap, 0)));
 
     return 0;
 }

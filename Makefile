@@ -34,4 +34,4 @@ Heap.o: Heap.c Heap.h
 	$(CC) $(CFLAGS) -c Heap.c
 
 clean:
-	rm -f $(OBJ) UnitTestGraph.o $(EXEC) UnitTestGraph
+	rm -f $(OBJ) UnitTestGraph.o UnitTestHeap.o $(EXEC) UnitTestGraph UnitTestHeap	

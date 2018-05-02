@@ -1,7 +1,7 @@
 #include "Heap.h"
-static void heapify(Heap*, int, GET_KEY_CALLBACK);
+static void heapify(Heap*, int);
 
-Heap* createEmptyHeap(int heap_type, size_t max_size, GET_KEY_CALLBACK funcptr)
+Heap* createEmptyHeap(int heap_type, int max_size, GET_KEY_CALLBACK funcptr)
 {
     Heap* heap = NULL;
 
@@ -18,7 +18,7 @@ Heap* createEmptyHeap(int heap_type, size_t max_size, GET_KEY_CALLBACK funcptr)
     return heap;
 }
 
-void buildHeap(Heap* heap, void** data_array, size_t array_len, GET_KEY_CALLBACK funcptr)
+void buildHeap(Heap* heap, void** data_array, int array_len)
 {
     int i;
 
@@ -36,17 +36,16 @@ void buildHeap(Heap* heap, void** data_array, size_t array_len, GET_KEY_CALLBACK
             {
                 heap->data_array[i] = NULL;
             }
-
         }
 
         for(i = ((heap->heap_size) - 1)/2; i >=0; i--)
         {
-            heapify(heap, i, funcptr);
+            heapify(heap, i);
         }
     }
 }
 
-void* heapExtractRoot(Heap* heap, GET_KEY_CALLBACK funcptr)
+void* heapExtractRoot(Heap* heap)
 {
     void* data = NULL;
 
@@ -56,13 +55,13 @@ void* heapExtractRoot(Heap* heap, GET_KEY_CALLBACK funcptr)
         heap->data_array[0] = heap->data_array[heap->heap_size - 1];
         heap->data_array[heap->heap_size - 1] = NULL;
         heap->heap_size --;
-        heapify(heap,0,funcptr);
+        heapify(heap,0);
     }
 
     return data;
 }
 
-void* heapExtractIndex(Heap* heap, int i,GET_KEY_CALLBACK funcptr)
+void* heapExtractIndex(Heap* heap, int i)
 {
     void* data = NULL;
 
@@ -72,13 +71,13 @@ void* heapExtractIndex(Heap* heap, int i,GET_KEY_CALLBACK funcptr)
         heap->data_array[i] = heap->data_array[heap->heap_size - 1];
         heap->data_array[heap->heap_size - 1] = NULL;
         heap->heap_size --;
-        heapify(heap,i,funcptr);
+        heapify(heap,i);
     }
 
     return data;
 }
 
-int heapInsert(Heap* heap, void* data, GET_KEY_CALLBACK funcptr)
+int heapInsert(Heap* heap, void* data)
 {
     int success = 0;
     int i = 0;
@@ -89,15 +88,15 @@ int heapInsert(Heap* heap, void* data, GET_KEY_CALLBACK funcptr)
         heap->heap_size ++;
         i = heap->heap_size - 1;
 
-        key = (*funcptr)(data);
-        parentKey = (*funcptr)(heap->data_array[i/2]);
+        key = (*heap->funcptr)(data);
+        parentKey = (*heap->funcptr)(heap->data_array[i/2]);
         if(heap->heap_type == MAX)
         {
             while(i >= 1 && parentKey < key)
             {
                 heap->data_array[i] = heap->data_array[i/2];
                 i = i/2;
-                parentKey = (*funcptr)(heap->data_array[i/2]);
+                parentKey = (*heap->funcptr)(heap->data_array[i/2]);
             }
         }
         else
@@ -106,7 +105,7 @@ int heapInsert(Heap* heap, void* data, GET_KEY_CALLBACK funcptr)
             {
                 heap->data_array[i] = heap->data_array[i/2];
                 i = i/2;
-                parentKey = (*funcptr)(heap->data_array[i/2]);
+                parentKey = (*heap->funcptr)(heap->data_array[i/2]);
             }
         }
         heap->data_array[i] = data;
@@ -122,7 +121,7 @@ int heapInsert(Heap* heap, void* data, GET_KEY_CALLBACK funcptr)
     return success;
 }
 
-int heapUpdate(Heap* heap, int i, GET_KEY_CALLBACK funcptr)
+int heapUpdate(Heap* heap, int i)
 {
     int success = 0;
     int parentKey, key;
@@ -131,8 +130,8 @@ int heapUpdate(Heap* heap, int i, GET_KEY_CALLBACK funcptr)
 
     if(i >= 0 && i < heap->heap_size)
     {
-        key = (*funcptr)(heap->data_array[i]);
-        parentKey = (*funcptr)(heap->data_array[i/2]);
+        key = (*heap->funcptr)(heap->data_array[i]);
+        parentKey = (*heap->funcptr)(heap->data_array[i/2]);
         if(heap->heap_type == MAX)
         {
             while(i >= 1 && parentKey < key)
@@ -141,7 +140,7 @@ int heapUpdate(Heap* heap, int i, GET_KEY_CALLBACK funcptr)
                 heap->data_array[i] = heap->data_array[i/2];
                 heap->data_array[i/2] = tmpData;
                 i = i/2;
-                parentKey = (*funcptr)(heap->data_array[i/2]);
+                parentKey = (*heap->funcptr)(heap->data_array[i/2]);
             }
         }
         else
@@ -152,13 +151,13 @@ int heapUpdate(Heap* heap, int i, GET_KEY_CALLBACK funcptr)
                 heap->data_array[i] = heap->data_array[i/2];
                 heap->data_array[i/2] = tmpData;
                 i = i/2;
-                parentKey = (*funcptr)(heap->data_array[i/2]);
+                parentKey = (*heap->funcptr)(heap->data_array[i/2]);
             }
         }
 
         if(orgIdx == i)
         {
-            heapify(heap, i, funcptr);
+            heapify(heap, i);
         }
 
         success = 1;
@@ -167,7 +166,7 @@ int heapUpdate(Heap* heap, int i, GET_KEY_CALLBACK funcptr)
     return success;
 }
 
-static void heapify(Heap* heap, int i, GET_KEY_CALLBACK funcptr)
+static void heapify(Heap* heap, int i)
 {
     void* tmp;
     int left = i * 2 + 1;
@@ -177,8 +176,8 @@ static void heapify(Heap* heap, int i, GET_KEY_CALLBACK funcptr)
 
     if(left < heap->heap_size - 1)
     {
-        key1 = (*funcptr)(heap->data_array[left]);
-        key2 = (*funcptr)(heap->data_array[swapIdx]);
+        key1 = (*heap->funcptr)(heap->data_array[left]);
+        key2 = (*heap->funcptr)(heap->data_array[swapIdx]);
 
         if(heap->heap_type == MAX)
         {
@@ -198,8 +197,8 @@ static void heapify(Heap* heap, int i, GET_KEY_CALLBACK funcptr)
 
     if(right < heap->heap_size - 1)
     {
-        key1 = (*funcptr)(heap->data_array[right]);
-        key2 = (*funcptr)(heap->data_array[swapIdx]);
+        key1 = (*heap->funcptr)(heap->data_array[right]);
+        key2 = (*heap->funcptr)(heap->data_array[swapIdx]);
         if(heap->heap_type == MAX)
         {
             if(key1 > key2)
@@ -221,6 +220,6 @@ static void heapify(Heap* heap, int i, GET_KEY_CALLBACK funcptr)
         tmp = heap->data_array[i];
         heap->data_array[i] = heap->data_array[swapIdx];
         heap->data_array[swapIdx] = tmp;
-        heapify(heap, swapIdx, funcptr);
+        heapify(heap, swapIdx);
     }
 }

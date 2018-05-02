@@ -24,6 +24,12 @@ GraphNode.o: GraphNode.c GraphNode.h LinkedList.h
 LinkedList.o: LinkedList.c LinkedList.h
 	$(CC) $(CFLAGS) -c LinkedList.c
 
+UnitTestHeap: UnitTestHeap.o Heap.o
+	$(CC) $(CLAGS) UnitTestHeap.o Heap.o -o UnitTestHeap
+
+UnitTestHeap.o: UnitTestHeap.c Heap.h
+	$(CC) $(CFLAGS) -c UnitTestHeap.c
+
 Heap.o: Heap.c Heap.h
 	$(CC) $(CFLAGS) -c Heap.c
 

@@ -1,7 +1,7 @@
 #include "Heap.h"
 static void heapify(Heap*, int, GET_KEY_CALLBACK);
 
-Heap* createEmptyHeap(int heap_type, size_t max_size)
+Heap* createEmptyHeap(int heap_type, size_t max_size, GET_KEY_CALLBACK funcptr)
 {
     Heap* heap = NULL;
 
@@ -12,6 +12,7 @@ Heap* createEmptyHeap(int heap_type, size_t max_size)
         heap->heap_size = 0;
         heap->heap_type = heap_type;
         heap->MAX_SIZE = max_size;
+        heap->funcptr = funcptr;
     }
 
     return heap;
@@ -83,7 +84,7 @@ int heapInsert(Heap* heap, void* data, GET_KEY_CALLBACK funcptr)
     int i = 0;
     int parentKey, key;
 
-    if(heap->heap_size < heap->MAX_SIZE)
+    if(heap->heap_size < heap->MAX_SIZE && heap->heap_size > 0)
     {
         heap->heap_size ++;
         i = heap->heap_size - 1;
@@ -111,6 +112,11 @@ int heapInsert(Heap* heap, void* data, GET_KEY_CALLBACK funcptr)
         heap->data_array[i] = data;
 
         success = 1;
+    }
+    else
+    {
+        heap->data_array[i] = data;
+        heap->heap_size ++;
     }
 
     return success;

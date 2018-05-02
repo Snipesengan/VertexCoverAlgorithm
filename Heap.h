@@ -12,13 +12,14 @@ typedef struct
     void** data_array;
     int heap_size;
     size_t MAX_SIZE;
+    GET_KEY_CALLBACK funcptr;
 } Heap;
 
-Heap* createEmptyHeap(int, size_t);
+Heap* createEmptyHeap(int, size_t, GET_KEY_CALLBACK);
 void* heapExtractRoot(Heap*,GET_KEY_CALLBACK funcptr);
 void* heapExtractIndex(Heap*,int,GET_KEY_CALLBACK funcptr);
 int heapUpdate(Heap*,int,GET_KEY_CALLBACK funcptr);
 void buildHeap(Heap*, void**, size_t, GET_KEY_CALLBACK);
-int heapInsertRoot(Heap*,void*,GET_KEY_CALLBACK funcptr);
+int heapInsert(Heap*,void*,GET_KEY_CALLBACK funcptr);
 
 #endif

@@ -10,7 +10,7 @@ typedef struct
 {
     enum {MAX, MIN} heap_type;
     GET_KEY_CALLBACK funcptr;
-    void** data_array;
+    void* data_array[200];
     int heap_size;
     int MAX_SIZE;
 
@@ -23,5 +23,6 @@ void* heapExtractIndex(Heap*,int);
 int heapUpdate(Heap*,int);
 void buildHeap(Heap*, void**, int);
 int heapInsert(Heap*,void*);
+int freeHeap(Heap*);
 
 #endif

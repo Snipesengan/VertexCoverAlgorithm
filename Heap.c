@@ -1,6 +1,7 @@
 #include "Heap.h"
 static void heapify(Heap*, int);
 
+void printHeapKey(Heap* heap);
 Heap* createEmptyHeap(int heap_type, int max_size, GET_KEY_CALLBACK funcptr)
 {
     Heap* heap = NULL;
@@ -8,8 +9,7 @@ Heap* createEmptyHeap(int heap_type, int max_size, GET_KEY_CALLBACK funcptr)
     if(heap_type == 0 || heap_type == 1)
     {
         heap = (Heap*) malloc(sizeof(heap));
-        heap->data_array = (void**) malloc(max_size * sizeof(void*));
-        heap->heap_size = 0;
+        /*heap->data_array = (void**) malloc(max_size * sizeof(void*));*/
         heap->heap_type = heap_type;
         heap->MAX_SIZE = max_size;
         heap->funcptr = funcptr;
@@ -51,9 +51,9 @@ void* heapExtractRoot(Heap* heap)
 
     if(heap->heap_size >= 1)
     {
+        printf("%d\n", heap->heap_size);
         data = heap->data_array[0];
         heap->data_array[0] = heap->data_array[heap->heap_size - 1];
-        heap->data_array[heap->heap_size - 1] = NULL;
         heap->heap_size --;
         heapify(heap,0);
     }
@@ -109,6 +109,8 @@ int heapInsert(Heap* heap, void* data)
             }
         }
         heap->data_array[i] = data;
+        printf("inserted index: %d, key: %d\n", i, (*heap->funcptr)(heap->data_array[i]));
+        printHeapKey(heap);
 
         success = 1;
     }
@@ -222,4 +224,33 @@ static void heapify(Heap* heap, int i)
         heap->data_array[swapIdx] = tmp;
         heapify(heap, swapIdx);
     }
+}
+
+void printHeapKey(Heap* heap)
+{
+    int i;
+
+    if(heap != NULL && heap->heap_size > 0)
+    {
+        printf("{%d, ", (*(heap->funcptr))(heap->data_array[0]));
+        for(i = 0; i < heap->heap_size - 1; i++)
+        {
+            printf("%d, ", (*(heap->funcptr))(heap->data_array[i]));
+        }
+        printf("%d}\n", (*(heap->funcptr))(heap->data_array[heap->heap_size - 1]));
+    }
+}
+
+int freeHeap(Heap* heap)
+{
+    int success = 0;
+
+    if(heap != NULL)
+    {
+        free(heap->data_array);
+        free(heap);
+        success = 1;
+    }
+
+    return success;
 }

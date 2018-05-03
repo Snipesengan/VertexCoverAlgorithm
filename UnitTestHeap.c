@@ -27,7 +27,7 @@ int main(void)
     printf("----------------------------------------\n");
     /*--------------------------TEST CREATEEMPTYHEAP------------------------------*/
     printf("Testing createEmptyHeap: ");
-    heap = createEmptyHeap(MAX, 20, &getKey);
+    heap = createEmptyHeap(MAX, 20, getKey);
     if(heap != NULL)
     {
         printf(" PASSED\n\n");
@@ -73,6 +73,16 @@ int main(void)
         printf("%d,", *((int*)heapExtractIndex(heap, 0)));
     }
     printf("%d}\n\n", *((int*)heapExtractIndex(heap, 0)));
+
+    /*--------------------------CLEAN UP------------------------------*/
+    freeHeap(heap);
+    for(i = 0; i < 10; i++)
+    {
+        free(intArr[i]);
+        intArr[i] = NULL;
+    }
+    free(intArr);
+    intArr = NULL;
 
     return 0;
 }
